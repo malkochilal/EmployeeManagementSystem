@@ -20,12 +20,15 @@ const LoginComponent = () => {
         console.log(response.data);
 
         const token = "Basic " + window.btoa(username + ":" + password);
+        //window.btoa() yöntemi, verilen bir dizgiyi Base64 formatında kodlamak için kullanılan bir JavaScript fonksiyonudur. "btoa" kısaltması "binary to ASCII"
+        //(ikili veriden ASCII'ye) anlamına gelir. Bu yöntem, özellikle kullanıcı arayüzü tarafından oluşturulan verileri kodlamak için sıkça kullanılır.
         storeToken(token);
 
         saveLoggedInUser(username);
         navigator("/randevu");
 
         window.location.reload(false);
+        //bu sayfayı önbellekten yeniden yükler.tarayıcının önbelleğinde saklanan kaynakları kullanarak sayfayı yeniden yükler.
       })
       .catch((error) => {
         console.error(error);

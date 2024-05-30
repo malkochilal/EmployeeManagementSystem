@@ -6,10 +6,26 @@ import EmployeeComponent from "./components/EmployeeComponent";
 {
   /*import EmployeeComponent from "./components/EmployeeComponent";*/
 }
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import RegisterComponent from "./components/RegisterComponent";
 import LoginComponent from "./components/LoginComponent";
+import { isUserLoggedIn } from "./services/AuthService";
+import RandevuComponent from "./components/RandevuComponent";
+import PropTypes from "prop-types";
+
 function App() {
+  function AuthenticatedRoute({ children }) {
+    const isAuth = isUserLoggedIn();
+
+    if (isAuth) {
+      return children;
+    }
+
+    return <Navigate to="/randevu" />;
+  }
+  AuthenticatedRoute.propTypes = {
+    children: PropTypes.node, // children prop'unun tipi olarak node kullanılır
+  };
   return (
     <>
       <BrowserRouter>
@@ -25,6 +41,15 @@ function App() {
             element={<EmployeeComponent />}
           ></Route>
           <Route path="/register" element={<RegisterComponent />}></Route>
+          <Route path="/login" element={<LoginComponent />}></Route>
+          <Route
+            path="/randevu"
+            element={
+              <AuthenticatedRoute>
+                <RandevuComponent />
+              </AuthenticatedRoute>
+            }
+          ></Route>
         </Routes>
       </BrowserRouter>
     </>
